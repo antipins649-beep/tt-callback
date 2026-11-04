@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>TikTok код</title>
+<style>
+  :root { color-scheme: light dark; }
+  body { font-family: system-ui, sans-serif; max-width: 560px; margin: 48px auto; padding: 0 16px; line-height: 1.5; }
+  .code { font-family: ui-monospace, Consolas, monospace; word-break: break-all; padding: 14px; border: 1px solid #8884; border-radius: 10px; margin: 16px 0; }
+  button { font-size: 16px; padding: 10px 18px; border-radius: 10px; border: 0; background: #fe2c55; color: #fff; cursor: pointer; }
+  .muted { opacity: .7; font-size: 14px; }
+</style>
+</head>
+<body>
+<h2 id="h">Код для бота</h2>
+<p id="p">Скопируй строку ниже и отправь боту.</p>
+<div class="code" id="c"></div>
+<button id="b">Скопировать</button>
+<p class="muted" id="m"></p>
+<script>
+  const q = new URLSearchParams(location.search);
+  const code = q.get("code");
+  const err = q.get("error_description") || q.get("error");
+  const box = document.getElementById("c"), btn = document.getElementById("b");
+  if (code) {
+    box.textContent = "/code " + code;
+    btn.onclick = async () => {
+      try { await navigator.clipboard.writeText(box.textContent); btn.textContent = "Скопировано ✓"; }
+      catch (e) { getSelection().selectAllChildren(box); btn.textContent = "Нажми Ctrl+C"; }
+    };
+    document.getElementById("m").textContent = "Код действует несколько минут, отправь его сразу.";
+  } else {
+    document.getElementById("h").textContent = err ? "TikTok вернул ошибку" : "Кода нет";
+    document.getElementById("p").textContent = err || "Эта страница открывается после авторизации в TikTok.";
+    box.remove(); btn.remove();
+  }
+</script>
+</body>
+</html>
